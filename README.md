@@ -20,6 +20,8 @@ prompt + context  ──▶  gram-render  ──▶  GramSpec (JSON)
 
 gram-render never talks to Telegram. No bot token, no transport, no update handling, no callback execution — it stops at the spec. You compile it (`compileClassicMessage` for classic HTML and `compileRichMessage` for Bot API 10.3 Rich Messages are included as reference compilers) and send it with any Bot API client.
 
+> **OpenJEV support:** Jev is built by [TypeSafe](https://typesafe.ai). This fork keeps TypeSafe as the default and adds optional support for [OpenJEV](https://openjev.sh), a free community gateway to the same Jev model — set `OPENJEV_API_KEY` (or `JEV_PROVIDER=openjev`) to use it. Original project: https://github.com/wei-b0/gram-render by @wei-b0.
+
 ## How it works
 
 Under the hood, composition runs on [JEV](https://typesafe.ai) (TypeSafe "System One") — a decision model that can only make calibrated discrete choices, never write text. That constraint is the safety property: **every string in the output comes from your data or your prompt** — gram-render never invents prose.
@@ -41,7 +43,7 @@ Node ≥ 20. The only runtime dependency is `zod`.
 
 For AI coding assistants, an [`llms.txt`](llms.txt) index of the API ships in the package and lives at the repo root.
 
-You need a TypeSafe API key ([console.typesafe.ai](https://console.typesafe.ai/settings/keys)). The default `createEvaluator()` reads it from its `apiKey` option, or from the `GRAM_RENDER_API_KEY` / `TYPESAFE_API_KEY` environment variables.
+You need a JEV API key. The default `createEvaluator()` reads it from its `apiKey` option, or from the `GRAM_RENDER_API_KEY` / `TYPESAFE_API_KEY` environment variables ([console.typesafe.ai](https://console.typesafe.ai/settings/keys)). Alternatively, set `OPENJEV_API_KEY` (or `JEV_PROVIDER=openjev`) to use [OpenJEV](https://openjev.sh), a free community gateway to the same Jev model.
 
 ## Quick start
 
@@ -180,7 +182,7 @@ Streaming variant: `step` events (kind `select` | `layout` | `edit`, description
 
 ### `createEvaluator(options)`
 
-The default evaluator — a ~100-line `fetch` wrapper for the TypeSafe API (no SDK dependency; `gram-render` ships with `zod` only). It is constructed automatically when `evaluate` is omitted, and exported so you can build it explicitly (as in the quick start), share one instance across calls, or configure it: `apiKey?` (else `GRAM_RENDER_API_KEY` / `TYPESAFE_API_KEY`), `baseURL?` (else `TYPESAFE_BASE_URL`; default `https://api.typesafe.ai`), `model?` (else `TYPESAFE_DEFAULT_MODEL`; default `jev-latest`), `timeoutMs?` (default 10 000), `fetch?` (inject a mock). HTTP errors surface as typed `EvaluatorError`s; there are no internal retries.
+The default evaluator — a ~100-line `fetch` wrapper for the Jev API (no SDK dependency; `gram-render` ships with `zod` only). It is constructed automatically when `evaluate` is omitted, and exported so you can build it explicitly (as in the quick start), share one instance across calls, or configure it: `provider?` (`"typesafe"` default, or `"openjev"`; also via `JEV_PROVIDER`), `apiKey?` (else `GRAM_RENDER_API_KEY` / `TYPESAFE_API_KEY` for TypeSafe, `OPENJEV_API_KEY` for OpenJEV), `baseURL?` (else `TYPESAFE_BASE_URL` / `OPENJEV_BASE_URL`; default `https://api.typesafe.ai` / `https://api.openjev.sh`), `model?` (else `TYPESAFE_DEFAULT_MODEL` / `OPENJEV_MODEL`; default `jev-latest` / `openjev`), `timeoutMs?` (default 10 000), `fetch?` (inject a mock). HTTP errors surface as typed `EvaluatorError`s; there are no internal retries.
 
 ## GramSpec
 

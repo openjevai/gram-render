@@ -169,8 +169,12 @@ async function main(): Promise<void> {
   // the SDK from adding hidden retry windows inside a measured attempt.
   const client = new OpenAI({ apiKey, maxRetries: 0, ...(useOpenRouter ? { baseURL: OPENROUTER_BASE_URL } : {}) });
   const evaluate = createEvaluator();
-  const jevModel = process.env["TYPESAFE_DEFAULT_MODEL"] ?? "jev-latest";
-  const jevBaseUrl = (process.env["TYPESAFE_BASE_URL"] ?? "https://api.typesafe.ai").replace(/\/+$/, "");
+  const jevModel = process.env["JEV_PROVIDER"] === "openjev"
+    ? (process.env["OPENJEV_MODEL"] ?? "openjev")
+    : (process.env["TYPESAFE_DEFAULT_MODEL"] ?? "jev-latest");
+  const jevBaseUrl = (process.env["JEV_PROVIDER"] === "openjev"
+    ? (process.env["OPENJEV_BASE_URL"] ?? "https://api.openjev.sh")
+    : (process.env["TYPESAFE_BASE_URL"] ?? "https://api.typesafe.ai")).replace(/\/+$/, "");
 
   let warmup: { llm: number; jev: number } | undefined;
   if (!args.cold) {

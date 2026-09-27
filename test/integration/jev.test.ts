@@ -4,10 +4,11 @@ import type { ButtonElement, GramSpec } from "../../src/spec/schema.js";
 
 /**
  * Real-JEV integration tests. Skipped unless TYPESAFE_API_KEY (or
- * GRAM_RENDER_API_KEY) is set — `npm run test:integration` runs them.
+ * GRAM_RENDER_API_KEY, or OPENJEV_API_KEY) is set — `npm run test:integration`
+ * runs them.
  */
 
-const HAS_KEY = Boolean(process.env["TYPESAFE_API_KEY"] ?? process.env["GRAM_RENDER_API_KEY"]);
+const HAS_KEY = Boolean(process.env["TYPESAFE_API_KEY"] ?? process.env["GRAM_RENDER_API_KEY"] ?? process.env["OPENJEV_API_KEY"]);
 
 const AGENTS = [
   { name: "cart-resolver", status: "running", uptime: "3h 12m", tasks_done: 142 },

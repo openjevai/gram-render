@@ -6,6 +6,7 @@
  *   SESSION_PATH         optional — where the session snapshot lives
  *   GRAM_DEMO_REPO_URL   optional — the "Source" button on the home screen
  *   TYPESAFE_API_KEY / GRAM_RENDER_API_KEY — needed for renders (not for screens)
+ *   OPENJEV_API_KEY      optional — alternative JEV key via OpenJEV (community gateway)
  */
 
 import { readFileSync } from "node:fs";

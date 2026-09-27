@@ -31,6 +31,8 @@ function fetchMock(
 afterEach(() => {
   delete process.env["GRAM_RENDER_API_KEY"];
   delete process.env["TYPESAFE_API_KEY"];
+  delete process.env["OPENJEV_API_KEY"];
+  delete process.env["JEV_PROVIDER"];
 });
 
 describe("createEvaluator", () => {
@@ -100,6 +102,31 @@ describe("createEvaluator", () => {
       fetch: fetchMock(200, { answers: { q1: { type: "noul" } } }),
     });
     await expect(evaluate(argsWith({ q1: QUESTION }))).rejects.toThrowError(/non-choice/);
+  });
+
+  it("uses the OpenJEV endpoint and model when provider is openjev", async () => {
+    let capturedUrl: string | undefined;
+    let captured: RequestInit | undefined;
+    const evaluate = createEvaluator({
+      provider: "openjev",
+      apiKey: *** fetch: fetchMock(200, {
+        model: "openjev",
+        answers: { q1: { type: "choice", choice: "a", confidence: 0.9 } },
+      }, (url, init) => {
+        capturedUrl = url;
+        captured = init;
+      }),
+    });
+    await evaluate(argsWith({ q1: QUESTION }));
+    expect(capturedUrl).toBe("https://api.openjev.sh/v1/systemone");
+    const body = JSON.parse(String(captured!.body));
+    expect(body.model).toBe("openjev");
+  });
+
+  it("infers openjev when only OPENJEV_API_KEY is set", () => {
+    process.env["OPENJEV_API_KEY"] = "oj_test";
+    const evaluator = createEvaluator({ fetch: fetchMock(200, { answers: {} }) });
+    expect(evaluator).toBeTypeOf("function");
   });
 
   it("honors an external abort signal", async () => {

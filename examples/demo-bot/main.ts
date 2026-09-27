@@ -58,9 +58,9 @@ const composer = createComposer(bot);
 const actions = createActions({ bot, composer, repoUrl: config.repoUrl });
 const commands = createCommands({ bot, composer, repoUrl: config.repoUrl });
 
-if (!process.env["TYPESAFE_API_KEY"] && !process.env["GRAM_RENDER_API_KEY"]) {
+if (!process.env["TYPESAFE_API_KEY"] && !process.env["GRAM_RENDER_API_KEY"] && !process.env["OPENJEV_API_KEY"]) {
   console.warn(
-    "[demo-bot] no TypeSafe API key — screens and navigation work, but renders will fail until GRAM_RENDER_API_KEY (or TYPESAFE_API_KEY) is set.",
+    "[demo-bot] no JEV API key — screens and navigation work, but renders will fail until GRAM_RENDER_API_KEY (or TYPESAFE_API_KEY, or OPENJEV_API_KEY) is set.",
   );
 }
 

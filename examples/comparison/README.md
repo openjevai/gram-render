@@ -212,8 +212,10 @@ video/                    Remotion composition (pure replay; bundled web fonts)
 |---|---|---|
 | `OPENROUTER_API_KEY` | LLM side | preferred when set — routes to OpenRouter (`https://openrouter.ai/api/v1`, default model `openai/gpt-6-astra`) |
 | `OPENAI_API_KEY` | LLM side | direct OpenAI fallback, used when `OPENROUTER_API_KEY` is unset |
-| `TYPESAFE_API_KEY` (or `GRAM_RENDER_API_KEY`) | JEV side | required |
+| `TYPESAFE_API_KEY` (or `GRAM_RENDER_API_KEY`) | JEV side | required (TypeSafe is the default) |
+| `OPENJEV_API_KEY` | JEV side | alternative — set with `JEV_PROVIDER=openjev` to use OpenJEV (community gateway to the same Jev model) |
 | `TYPESAFE_BASE_URL`, `TYPESAFE_DEFAULT_MODEL` | JEV side | optional overrides, pinned in the trace |
+| `OPENJEV_BASE_URL`, `OPENJEV_MODEL` | JEV side | optional overrides for the OpenJEV provider |
 
 Both LLM routes use the same OpenAI Responses API with native structured
 output; the trace records which provider, base URL, and model each run hit.

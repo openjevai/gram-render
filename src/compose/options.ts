@@ -19,7 +19,7 @@ export interface ComposeOptions {
   context?: Record<string, unknown>;
   /** Existing spec to edit instead of composing from scratch. */
   initialSpec?: GramSpec;
-  /** Custom evaluator (TypeSafe by default; see createEvaluator). */
+  /** Custom evaluator (TypeSafe by default; OpenJEV optional; see createEvaluator). */
   evaluate?: Evaluator;
   guidance?: Guidance;
   limits?: Partial<Limits>;

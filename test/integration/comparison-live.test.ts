@@ -21,7 +21,7 @@ const USE_OPENROUTER = Boolean(OPENROUTER_KEY);
 
 const HAS_KEYS =
   (Boolean(OPENROUTER_KEY) || Boolean(OPENAI_KEY)) &&
-  Boolean(process.env["TYPESAFE_API_KEY"] ?? process.env["GRAM_RENDER_API_KEY"]);
+  Boolean(process.env["TYPESAFE_API_KEY"] ?? process.env["GRAM_RENDER_API_KEY"] ?? process.env["OPENJEV_API_KEY"]);
 
 describe.skipIf(!HAS_KEYS)("comparison live", () => {
   it(
@@ -60,8 +60,12 @@ describe.skipIf(!HAS_KEYS)("comparison live", () => {
         openaiVersion: "test",
         baseUrl: USE_OPENROUTER ? "https://openrouter.ai/api/v1" : "https://api.openai.com/v1",
         maxOutputTokens: 4096,
-        jevModel: process.env["TYPESAFE_DEFAULT_MODEL"] ?? "jev-latest",
-        jevBaseUrl: (process.env["TYPESAFE_BASE_URL"] ?? "https://api.typesafe.ai").replace(/\/+$/, ""),
+        jevModel: process.env["JEV_PROVIDER"] === "openjev"
+          ? (process.env["OPENJEV_MODEL"] ?? "openjev")
+          : (process.env["TYPESAFE_DEFAULT_MODEL"] ?? "jev-latest"),
+        jevBaseUrl: (process.env["JEV_PROVIDER"] === "openjev"
+          ? (process.env["OPENJEV_BASE_URL"] ?? "https://api.openjev.sh")
+          : (process.env["TYPESAFE_BASE_URL"] ?? "https://api.typesafe.ai")).replace(/\/+$/, ""),
         minConfidence: 0.7,
       });
 

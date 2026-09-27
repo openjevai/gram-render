@@ -8,7 +8,7 @@
 npm install gram-render
 ```
 
-Node ≥ 20. Runtime dependency: `zod` only. A TypeSafe API key is required ([console.typesafe.ai](https://console.typesafe.ai/settings/keys)); the default evaluator reads the `apiKey` option, or `GRAM_RENDER_API_KEY` / `TYPESAFE_API_KEY` env vars.
+Node ≥ 20. Runtime dependency: `zod` only. A JEV API key is required: TypeSafe ([console.typesafe.ai](https://console.typesafe.ai/settings/keys)) is the default (reads `apiKey` option, or `GRAM_RENDER_API_KEY` / `TYPESAFE_API_KEY`); alternatively set `OPENJEV_API_KEY` (or `JEV_PROVIDER=openjev`) to use OpenJEV ([openjev.sh](https://openjev.sh)), a free community gateway to the same Jev model.
 
 ## Core loop
 
@@ -52,7 +52,7 @@ Pass a previous spec as `initialSpec` with a follow-up prompt. JEV runs a sequen
 
 ## API surface (package root)
 
-`render`, `composeSpec` (streaming AsyncIterable of validated intermediate specs), `createEvaluator` (default TypeSafe evaluator; inject a custom `Evaluator` via the `evaluate` option), `deriveCandidates` (pure; the same derivation JEV sees), `compileClassicMessage`, `compileRichMessage`, `inspectClassicMessage`, `inspectRichMessage`, `serializeCallbackData`, `parseGramSpec`, `serializeGramSpec`, `CATALOG`, `describeElement`, `telegramDiagnostics`, `RICH_LIMITS`, `GramRenderError` (+ `EvaluatorError`, `CompositionError`, `ValidationError`).
+`render`, `composeSpec` (streaming AsyncIterable of validated intermediate specs), `createEvaluator` (default TypeSafe evaluator; `provider: "openjev"` for OpenJEV; inject a custom `Evaluator` via the `evaluate` option), `deriveCandidates` (pure; the same derivation JEV sees), `compileClassicMessage`, `compileRichMessage`, `inspectClassicMessage`, `inspectRichMessage`, `serializeCallbackData`, `parseGramSpec`, `serializeGramSpec`, `CATALOG`, `describeElement`, `telegramDiagnostics`, `RICH_LIMITS`, `GramRenderError` (+ `EvaluatorError`, `CompositionError`, `ValidationError`).
 
 ## Rules that do not bend
 
